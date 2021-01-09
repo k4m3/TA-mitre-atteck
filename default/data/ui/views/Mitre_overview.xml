@@ -1,0 +1,628 @@
+<form theme="light">
+  <label>MITRE ATT&amp;CK - Environmental coverage</label>
+  <fieldset submitButton="false">
+    <input type="radio" token="status">
+      <label>Alerts status</label>
+      <choice value="0">Enable</choice>
+      <choice value="1">Disabled</choice>
+      <default>0</default>
+      <prefix>disabled="</prefix>
+      <suffix>"</suffix>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Initial Access</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="initial-access" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22initial-access%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Execution</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="execution" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22execution%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Persistence</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="persistence" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22persistence%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Privilege Escalation</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="privilege-escalation" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22privilege-escalation%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Defense Evasion</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches  
+| search action.mitre_att_ck.param.tactics="defense-evasion" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22defense-evasion%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Credential Access</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="credential-access" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22credential-access%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Reconnaissance</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="reconnaissance" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22reconnaissance%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Discovery</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="discovery" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22discovery%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Lateral Movement</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="lateral-movement" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22lateral-movement%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Collection</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="collection" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22collection%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Command &amp; Control</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="command-and-control" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22command-and-control%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Exfiltration</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="exfiltration" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22exfiltration%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Impact</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="impact" $status$
+| stats count 
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0xf8be34","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,2,4]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22impact%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Amount of Alerts</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="*" $status$ 
+| stats dc(title)</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">all</option>
+        <option name="height">251</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x555","0x006d9c","0x53a051"]</option>
+        <option name="rangeValues">[0,10]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">Alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.tactics%3D%22*%22%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22(%3F%3CTechniqueId%3E.%2B)%3A%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.technique%20%22%3A%5Cs(%3F%3CTechnique%3E.%2B)%22%20%0A%7C%20rex%20field%3DTechniqueId%20mode%3Dsed%20%22s%2F%5C.%2F%5C%2F%2Fg%22%20%0A%7C%20rex%20field%3Daction.mitre_att_ck.param.tactics%20mode%3Dsed%20%22s%2F%5C-%2F%20%2Fg%22%20%0A%7C%20rename%20action.mitre_att_ck.param.tactics%20as%20%22Tactics%22%2C%20action.mitre_att_ck.param.data_source%20as%20%22Data%20Source%22%0A%7C%20eval%20Tactics%3Dupper(Tactics)%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20table%20status%2C%20title%2C%20search%2C%20Tactics%2C%20Technique%2C%20TechniqueId%2C%20%22Data%20Source%22&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Data source</title>
+      <chart>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| eval data="Data Source"
+| search action.mitre_att_ck.param.data_source=* $status$
+| chart count over data by action.mitre_att_ck.param.data_source
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">collapsed</option>
+        <option name="charting.axisTitleY.visibility">collapsed</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.abbreviation">none</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.abbreviation">none</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.showDataLabels">all</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">none</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.layout.splitSeries.allowIndependentYRanges">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.mode">standard</option>
+        <option name="charting.legend.placement">left</option>
+        <option name="charting.lineWidth">2</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.tactics="*"  $status$
+| rex field=action.mitre_att_ck.param.technique "(?&lt;TechniqueId&gt;.+):" 
+| rex field=action.mitre_att_ck.param.technique ":\s(?&lt;Technique&gt;.+)" 
+| rex field=TechniqueId mode=sed "s/\./\//g" 
+| rex field=action.mitre_att_ck.param.tactics mode=sed "s/\-/ /g" 
+| rename action.mitre_att_ck.param.tactics as "Tactics", action.mitre_att_ck.param.data_source as "Data Source"
+| eval Tactics=upper(Tactics)
+| eval status = if(disabled == 0, "enabled", "disabled")
+| table status, title, Tactics, Technique, TechniqueId, "Data Source"
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">100</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="status">
+          <colorPalette type="map">{"enabled":#53A051,"disabled":#DC4E41}</colorPalette>
+        </format>
+        <drilldown>
+          <condition field="TechniqueId">
+            <link target="_blank">https://attack.mitre.org/techniques/$row.TechniqueId$</link>
+          </condition>
+          <condition field="title">
+            <link target="_blank">/manager/-/saved/searches?app=&amp;count=10&amp;offset=0&amp;itemType=alerts&amp;owner=&amp;search=$row.title$</link>
+          </condition>
+          <condition></condition>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</form>

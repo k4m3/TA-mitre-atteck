@@ -1,0 +1,32 @@
+[props/source%3A%3A...mitre_att_ck_modalert.log%2A]
+owner = admin
+version = 8.1.1
+modtime = 1610156524.324106000
+
+[ta_mitre_atteck_settings/additional_parameters]
+version = 8.1.1
+modtime = 1610222184.826797000
+
+[nav/default]
+version = 8.1.1
+modtime = 1610210068.508455000
+
+[views/Mitre_overview]
+owner = admin
+version = 8.1.1
+modtime = 1610215933.421386000
+
+[views/mitre_alerts]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.1.1
+modtime = 1610222303.336150000
+
+[macros/index-summary]
+version = 8.1.1
+modtime = 1610222205.250464000
+
+[savedsearches/DEMO%3A%20Account%20Discovery%2FDiscovery]
+version = 8.1.1
+modtime = 1610222348.558057000

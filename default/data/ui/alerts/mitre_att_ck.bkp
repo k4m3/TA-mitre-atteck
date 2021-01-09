@@ -1,0 +1,33 @@
+<form class="form-horizontal form-complex">
+<div class="control-group">
+	<label class="control-label" for="mitre_att_ck_summary_log">Summary log <span class="required">*</span> </label>
+    <div class="controls">
+	<input type="text" name="action.mitre_att_ck.param.summary_log" id="mitre_att_ck_summary_log"/>
+                <span class="help-block"> 
+                    Summary text to identify the alert
+                </span>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="mitre_att_ck_tactics">Tactics <span class="required">*</span> </label>
+    <div class="controls">
+<select name="action.mitre_att_ck.param.tactics" id="mitre_att_ck_tactics">
+        <option value="Privilege_Escalation">Privilege Escalation</option>
+</select>
+                <span class="help-block"> 
+                    Select the MITRE ATT&amp;CK Tactic.
+                </span>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="mitre_att_ck_technique">Technique <span class="required">*</span> </label>
+    <div class="controls">
+<select name="action.mitre_att_ck.param.technique" id="mitre_att_ck_technique">
+        <option value="T1055_Process_Injection">T1055: Process Injection</option>
+</select>
+                <span class="help-block"> 
+                    Select the MITRE ATT&amp;CK technique name.
+                </span>
+    </div>
+</div>
+</form>

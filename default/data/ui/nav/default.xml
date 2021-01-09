@@ -1,0 +1,10 @@
+<nav search_view="search" color="#297ba5">
+  <collection label="MITRE ATT&amp;CK">
+   <view name="Mitre_overview" default="true" />
+    <view name="mitre_alerts"/>
+    </collection>
+
+<view name="configuration"/>
+<view name="search" label="Search"/>
+<view name="dashboards"/>
+</nav>
