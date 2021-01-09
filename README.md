@@ -3,6 +3,7 @@
 The purpose of the app is to show how much your environment covers the techniques and tactics of the miter attack, helping the SOC to direct the forces to areas that are less covered
 
 Add an alert on the dashboard
+
 ![Alt Text](files/Alert_configure.gif)
 
 Example of the completed panel
@@ -10,6 +11,7 @@ Example of the completed panel
 ![Alt Text](files/Environmental_coverage.jpeg)
 
 Example of the triggered alerts panel
+
 ![Alt Text](files/Triggered_alerts.jpeg)
 
 
