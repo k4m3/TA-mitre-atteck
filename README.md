@@ -15,7 +15,7 @@ Example of the triggered alerts panel
 ![Alt Text](files/Triggered_alerts.jpeg)
 
 
-If you want to use the demos alerts I used in the example, just rename the file **:"default/savedsearches.conf.old":** to **:"default/savedsearches.conf":**.
+If you want to use the demos alerts I used in the example, just rename the file **"default/savedsearches.conf.old"** to **"default/savedsearches.conf"**.
 
 
 
