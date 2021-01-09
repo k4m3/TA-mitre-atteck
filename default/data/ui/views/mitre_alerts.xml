@@ -631,7 +631,10 @@
         <search>
           <query>`index-summary` Data_Source=* 
 | chart sparkline count by Name 
-| sort - count</query>
+| sort - count
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
           <earliest>$time.earliest$</earliest>
           <latest>$time.latest$</latest>
           <sampleRatio>1</sampleRatio>
