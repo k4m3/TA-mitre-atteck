@@ -17,7 +17,7 @@ Example of the triggered alerts panel
 
 If you want to use the demos alerts I used in the example, just rename the file **"default/savedsearches.conf.old"** to **"default/savedsearches.conf"**.
 
-**Obs:** By default, alerts are summarized in the "summary" index, but you can change to the desired index by going to the app's settings.
+**Obs:** By default, alerts are summarized in the **"summary"** index, but you can change to the desired index by going to the app's settings.
 
 
 
