@@ -9,19 +9,19 @@ modtime = 1610222184.826797000
 
 [nav/default]
 version = 8.1.1
-modtime = 1610210068.508455000
+modtime = 1610390058.106348000
 
 [views/Mitre_overview]
 owner = admin
 version = 8.1.1
-modtime = 1610215933.421386000
+modtime = 1610486191.127206000
 
 [views/mitre_alerts]
 access = read : [ * ], write : [ admin ]
 export = none
 owner = admin
 version = 8.1.1
-modtime = 1610222303.336150000
+modtime = 1610406473.131139000
 
 [macros/index-summary]
 version = 8.1.1
@@ -30,3 +30,22 @@ modtime = 1610222205.250464000
 [savedsearches/DEMO%3A%20Account%20Discovery%2FDiscovery]
 version = 8.1.1
 modtime = 1610222348.558057000
+
+[app/install/install_source_checksum]
+version = 8.1.1
+modtime = 1610234061.756351000
+
+[indexes/windows]
+owner = admin
+version = 8.1.1
+modtime = 1610251847.175535000
+
+[inputs/splunktcp%3A%2F%2F9997]
+owner = admin
+version = 8.1.1
+modtime = 1610251880.144266000
+
+[views/covered_tactics]
+owner = admin
+version = 8.1.1
+modtime = 1610390299.655295000

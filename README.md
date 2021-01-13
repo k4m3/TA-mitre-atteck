@@ -1,7 +1,4 @@
-# Mitre ATT & CK
-
-***For the app to work perfectly, it is necessary to install the Splunk Common Information Model (CIM)***
-https://splunkbase.splunk.com/app/1621/
+# Miter ATT & CK
 
 The purpose of the app is to show how much your environment covers the techniques and tactics of the miter attack, helping the SOC to direct the forces to areas that are less covered
 

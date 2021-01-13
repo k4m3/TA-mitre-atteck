@@ -2,6 +2,7 @@
   <collection label="MITRE ATT&amp;CK">
    <view name="Mitre_overview" default="true" />
     <view name="mitre_alerts"/>
+    <view name="covered_tactics"/>
     </collection>
 
 <view name="configuration"/>

@@ -534,7 +534,7 @@
         <search>
           <query>`index-summary` Data_Source=*
 | eval data="Data Source"
-| chart count over data by Data_Source
+| chart count over data by Data_Source useother=0
 | appendpipe 
     [ stats count 
     | where count=0]</query>
@@ -631,10 +631,7 @@
         <search>
           <query>`index-summary` Data_Source=* 
 | chart sparkline count by Name 
-| sort - count
-| appendpipe 
-    [ stats count 
-    | where count=0]</query>
+| sort - count</query>
           <earliest>$time.earliest$</earliest>
           <latest>$time.latest$</latest>
           <sampleRatio>1</sampleRatio>

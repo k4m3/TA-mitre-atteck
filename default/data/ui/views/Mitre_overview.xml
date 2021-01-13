@@ -538,7 +538,7 @@
           <query>| rest /servicesNS/-/-/saved/searches 
 | eval data="Data Source"
 | search action.mitre_att_ck.param.data_source=* $status$
-| chart count over data by action.mitre_att_ck.param.data_source
+| chart count over data by action.mitre_att_ck.param.data_source useother=0 limit=0
 | appendpipe 
     [ stats count 
     | where count=0]</query>
