@@ -14,6 +14,11 @@ Example of the triggered alerts panel
 
 ![Alt Text](files/Triggered_alerts.jpeg)
 
+Alerts priority panel
+
+![Alt Text](files/Alerts_Priority.PNG)
+
+
 If you don't want to use the demo alerts I used in the example, just rename the file ***"default/savedsearches.conf"*** to ***"default/savedsearches.conf.old"***.
 
 **Obs:** By default, alerts are summarized in the **"summary"** index, but you can change to the desired index by going to the app's settings.
