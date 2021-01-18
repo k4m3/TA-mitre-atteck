@@ -1,4 +1,4 @@
-# Miter ATT & CK
+# Mitre ATT & CK
 
 The purpose of the app is to show how much your environment covers the techniques and tactics of the miter attack, helping the SOC to direct the forces to areas that are less covered
 
