@@ -2,6 +2,8 @@
 
 The purpose of the app is to show how much your environment covers the techniques and tactics of the miter attack, helping the SOC to direct the forces to areas that are less covered
 
+***For the application to work fully, it is necessary to install "Splunk Common Information Model (CIM)"***
+
 Add an alert on the dashboard
 
 ![Alt Text](files/Alert_configure.gif)
