@@ -50,33 +50,4 @@
                 </span>
     </div>
 </div>
-<div class="control-group">
-        <label class="control-label" for="mitre_att_ck_urgency">Urgency <span class="required">*</span> </label>
-    <div class="controls">
-        <splunk-search-dropdown name="action.mitre_att_ck.param.urgency" id="mitre_att_ck_urgency"
-                search="| inputlookup priority.csv
-			| fields + urgency"
-                value-field="urgency" label-field="urgency">
-        </splunk-search-dropdown>
-                <span class="help-block">
-                    Alert urgency.
-                </span>
-    </div>
-</div>
-
-<div class="control-group">
-        <label class="control-label" for="mitre_att_ck_impact">Impact <span class="required">*</span> </label>
-    <div class="controls">
-        <splunk-search-dropdown name="action.mitre_att_ck.param.impact" id="mitre_att_ck_impact"
-                search="| inputlookup priority.csv
-                        | fields + impact"
-                value-field="impact" label-field="impact">
-        </splunk-search-dropdown>
-                <span class="help-block">
-                    Alert impact.
-                </span>
-    </div>
-</div>
-
-
 </form>

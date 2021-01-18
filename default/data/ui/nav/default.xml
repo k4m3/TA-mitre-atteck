@@ -4,7 +4,10 @@
     <view name="mitre_alerts"/>
     <view name="covered_tactics"/>
     </collection>
-
+  <collection label="Prioritization">
+  <view name="alerts_priority_matrix"/>
+<view name="prioritization_matrix"/>
+</collection>
 <view name="configuration"/>
 <view name="search" label="Search"/>
 <view name="dashboards"/>

@@ -1,2 +1,0 @@
-[additional_parameters]
-index_summary_alert = 

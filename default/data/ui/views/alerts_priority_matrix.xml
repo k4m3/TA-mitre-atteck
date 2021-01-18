@@ -1,0 +1,417 @@
+<form>
+  <label>Alerts - Priority matrix</label>
+  <description>Priority of alerts</description>
+  <fieldset submitButton="false">
+    <input type="radio" token="status">
+      <label>Alerts status</label>
+      <choice value="0">Enable</choice>
+      <choice value="1">Disable</choice>
+      <default>0</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Very low</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.urgency="*" disabled=$status$
+| rename action.mitre_att_ck.param.urgency as "Urgency", action.mitre_att_ck.param.impact as "Impact" 
+| eval status = if(disabled == 0, "enabled", "disabled")
+| eval Priority = case(
+    Urgency== "Very low" AND Impact == "Very low", "Very low", 
+    Urgency== "Very low" AND Impact == "Low", "Very low",
+    Urgency== "Very low" AND Impact == "Medium", "Low",
+    Urgency== "Very low" AND Impact == "High", "Low",
+    Urgency== "Very low" AND Impact == "Very high", "Low",
+    Urgency== "Low" AND Impact == "Very low", "Very low", 
+    Urgency== "Low" AND Impact == "Low", "Low",
+    Urgency== "Low" AND Impact == "Medium", "Low",
+    Urgency== "Low" AND Impact == "High", "Medium",
+    Urgency== "Low" AND Impact == "Very high", "Medium",
+    Urgency== "Medium" AND Impact == "Very low", "Low", 
+    Urgency== "Medium" AND Impact == "Low", "Low",
+    Urgency== "Medium" AND Impact == "Medium", "Medium",
+    Urgency== "Medium" AND Impact == "High", "High",
+    Urgency== "Medium" AND Impact == "Very high", "High",
+    Urgency== "High" AND Impact == "Very low", "Low", 
+    Urgency== "High" AND Impact == "Low", "Medium",
+    Urgency== "High" AND Impact == "Medium", "High",
+    Urgency== "High" AND Impact == "High", "High",
+    Urgency== "High" AND Impact == "Very high", "Very high",
+    Urgency== "Very high" AND Impact == "Very low", "Low", 
+    Urgency== "Very high" AND Impact == "Low", "Medium",
+    Urgency== "Very high" AND Impact == "Medium", "High",
+    Urgency== "Very high" AND Impact == "High", "Very high",
+    Urgency== "Very high" AND Impact == "Very high", "Very high"
+    ) 
+    | search Priority="Very low"
+| chart count
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0x53a051","0x53a051"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">Alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.urgency%3D%22*%22%0A%7C%20rename%20action.mitre_att_ck.param.urgency%20as%20%22Urgency%22%2C%20action.mitre_att_ck.param.impact%20as%20%22Impact%22%20%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20eval%20Priority%20%3D%20case(%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Very%20low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%0A%20%20%20%20)%20%0A%20%20%20%20%7C%20search%20Priority%3D%22Very%20low%22%0A%7C%20table%20title%20search%20Urgency%20Impact%20Priority%0A%7C%20appendpipe%20%0A%20%20%20%20%5B%20stats%20count%20%0A%20%20%20%20%7C%20where%20count%3D0%5D&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Low</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.urgency="*" disabled=$status$
+| rename action.mitre_att_ck.param.urgency as "Urgency", action.mitre_att_ck.param.impact as "Impact" 
+| eval status = if(disabled == 0, "enabled", "disabled")
+| eval Priority = case(
+    Urgency== "Very low" AND Impact == "Very low", "Very low", 
+    Urgency== "Very low" AND Impact == "Low", "Very low",
+    Urgency== "Very low" AND Impact == "Medium", "Low",
+    Urgency== "Very low" AND Impact == "High", "Low",
+    Urgency== "Very low" AND Impact == "Very high", "Low",
+    Urgency== "Low" AND Impact == "Very low", "Very low", 
+    Urgency== "Low" AND Impact == "Low", "Low",
+    Urgency== "Low" AND Impact == "Medium", "Low",
+    Urgency== "Low" AND Impact == "High", "Medium",
+    Urgency== "Low" AND Impact == "Very high", "Medium",
+    Urgency== "Medium" AND Impact == "Very low", "Low", 
+    Urgency== "Medium" AND Impact == "Low", "Low",
+    Urgency== "Medium" AND Impact == "Medium", "Medium",
+    Urgency== "Medium" AND Impact == "High", "High",
+    Urgency== "Medium" AND Impact == "Very high", "High",
+    Urgency== "High" AND Impact == "Very low", "Low", 
+    Urgency== "High" AND Impact == "Low", "Medium",
+    Urgency== "High" AND Impact == "Medium", "High",
+    Urgency== "High" AND Impact == "High", "High",
+    Urgency== "High" AND Impact == "Very high", "Very high",
+    Urgency== "Very high" AND Impact == "Very low", "Low", 
+    Urgency== "Very high" AND Impact == "Low", "Medium",
+    Urgency== "Very high" AND Impact == "Medium", "High",
+    Urgency== "Very high" AND Impact == "High", "Very high",
+    Urgency== "Very high" AND Impact == "Very high", "Very high"
+    ) 
+    | search Priority="Low"
+| chart count
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0xB6C75A","0xB6C75A"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">Alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.urgency%3D%22*%22%0A%7C%20rename%20action.mitre_att_ck.param.urgency%20as%20%22Urgency%22%2C%20action.mitre_att_ck.param.impact%20as%20%22Impact%22%20%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20eval%20Priority%20%3D%20case(%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Very%20low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%0A%20%20%20%20)%20%0A%20%20%20%20%7C%20search%20Priority%3D%22Low%22%0A%7C%20table%20title%20search%20Urgency%20Impact%20Priority%0A%7C%20appendpipe%20%0A%20%20%20%20%5B%20stats%20count%20%0A%20%20%20%20%7C%20where%20count%3D0%5D&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Medium</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.urgency="*" disabled=$status$
+| rename action.mitre_att_ck.param.urgency as "Urgency", action.mitre_att_ck.param.impact as "Impact" 
+| eval status = if(disabled == 0, "enabled", "disabled")
+| eval Priority = case(
+    Urgency== "Very low" AND Impact == "Very low", "Very low", 
+    Urgency== "Very low" AND Impact == "Low", "Very low",
+    Urgency== "Very low" AND Impact == "Medium", "Low",
+    Urgency== "Very low" AND Impact == "High", "Low",
+    Urgency== "Very low" AND Impact == "Very high", "Low",
+    Urgency== "Low" AND Impact == "Very low", "Very low", 
+    Urgency== "Low" AND Impact == "Low", "Low",
+    Urgency== "Low" AND Impact == "Medium", "Low",
+    Urgency== "Low" AND Impact == "High", "Medium",
+    Urgency== "Low" AND Impact == "Very high", "Medium",
+    Urgency== "Medium" AND Impact == "Very low", "Low", 
+    Urgency== "Medium" AND Impact == "Low", "Low",
+    Urgency== "Medium" AND Impact == "Medium", "Medium",
+    Urgency== "Medium" AND Impact == "High", "High",
+    Urgency== "Medium" AND Impact == "Very high", "High",
+    Urgency== "High" AND Impact == "Very low", "Low", 
+    Urgency== "High" AND Impact == "Low", "Medium",
+    Urgency== "High" AND Impact == "Medium", "High",
+    Urgency== "High" AND Impact == "High", "High",
+    Urgency== "High" AND Impact == "Very high", "Very high",
+    Urgency== "Very high" AND Impact == "Very low", "Low", 
+    Urgency== "Very high" AND Impact == "Low", "Medium",
+    Urgency== "Very high" AND Impact == "Medium", "High",
+    Urgency== "Very high" AND Impact == "High", "Very high",
+    Urgency== "Very high" AND Impact == "Very high", "Very high"
+    ) 
+    | search Priority="Medium"
+| chart count
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0xf8be34","0xf8be34"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">Alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.urgency%3D%22*%22%0A%7C%20rename%20action.mitre_att_ck.param.urgency%20as%20%22Urgency%22%2C%20action.mitre_att_ck.param.impact%20as%20%22Impact%22%20%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20eval%20Priority%20%3D%20case(%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Very%20low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%0A%20%20%20%20)%20%0A%20%20%20%20%7C%20search%20Priority%3D%22Medium%22%0A%7C%20table%20title%20search%20Urgency%20Impact%20Priority%0A%7C%20appendpipe%20%0A%20%20%20%20%5B%20stats%20count%20%0A%20%20%20%20%7C%20where%20count%3D0%5D&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>High</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.urgency="*" disabled=$status$
+| rename action.mitre_att_ck.param.urgency as "Urgency", action.mitre_att_ck.param.impact as "Impact" 
+| eval status = if(disabled == 0, "enabled", "disabled")
+| eval Priority = case(
+    Urgency== "Very low" AND Impact == "Very low", "Very low", 
+    Urgency== "Very low" AND Impact == "Low", "Very low",
+    Urgency== "Very low" AND Impact == "Medium", "Low",
+    Urgency== "Very low" AND Impact == "High", "Low",
+    Urgency== "Very low" AND Impact == "Very high", "Low",
+    Urgency== "Low" AND Impact == "Very low", "Very low", 
+    Urgency== "Low" AND Impact == "Low", "Low",
+    Urgency== "Low" AND Impact == "Medium", "Low",
+    Urgency== "Low" AND Impact == "High", "Medium",
+    Urgency== "Low" AND Impact == "Very high", "Medium",
+    Urgency== "Medium" AND Impact == "Very low", "Low", 
+    Urgency== "Medium" AND Impact == "Low", "Low",
+    Urgency== "Medium" AND Impact == "Medium", "Medium",
+    Urgency== "Medium" AND Impact == "High", "High",
+    Urgency== "Medium" AND Impact == "Very high", "High",
+    Urgency== "High" AND Impact == "Very low", "Low", 
+    Urgency== "High" AND Impact == "Low", "Medium",
+    Urgency== "High" AND Impact == "Medium", "High",
+    Urgency== "High" AND Impact == "High", "High",
+    Urgency== "High" AND Impact == "Very high", "Very high",
+    Urgency== "Very high" AND Impact == "Very low", "Low", 
+    Urgency== "Very high" AND Impact == "Low", "Medium",
+    Urgency== "Very high" AND Impact == "Medium", "High",
+    Urgency== "Very high" AND Impact == "High", "Very high",
+    Urgency== "Very high" AND Impact == "Very high", "Very high"
+    ) 
+    | search Priority="High"
+| chart count
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0xf1813f","0xf1813f"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">Alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.urgency%3D%22*%22%0A%7C%20rename%20action.mitre_att_ck.param.urgency%20as%20%22Urgency%22%2C%20action.mitre_att_ck.param.impact%20as%20%22Impact%22%20%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20eval%20Priority%20%3D%20case(%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Very%20low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%0A%20%20%20%20)%20%0A%20%20%20%20%7C%20search%20Priority%3D%22High%22%0A%7C%20table%20title%20search%20Urgency%20Impact%20Priority%0A%7C%20appendpipe%20%0A%20%20%20%20%5B%20stats%20count%20%0A%20%20%20%20%7C%20where%20count%3D0%5D&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Very high</title>
+      <single>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.urgency="*" disabled=$status$
+| rename action.mitre_att_ck.param.urgency as "Urgency", action.mitre_att_ck.param.impact as "Impact" 
+| eval status = if(disabled == 0, "enabled", "disabled")
+| eval Priority = case(
+    Urgency== "Very low" AND Impact == "Very low", "Very low", 
+    Urgency== "Very low" AND Impact == "Low", "Very low",
+    Urgency== "Very low" AND Impact == "Medium", "Low",
+    Urgency== "Very low" AND Impact == "High", "Low",
+    Urgency== "Very low" AND Impact == "Very high", "Low",
+    Urgency== "Low" AND Impact == "Very low", "Very low", 
+    Urgency== "Low" AND Impact == "Low", "Low",
+    Urgency== "Low" AND Impact == "Medium", "Low",
+    Urgency== "Low" AND Impact == "High", "Medium",
+    Urgency== "Low" AND Impact == "Very high", "Medium",
+    Urgency== "Medium" AND Impact == "Very low", "Low", 
+    Urgency== "Medium" AND Impact == "Low", "Low",
+    Urgency== "Medium" AND Impact == "Medium", "Medium",
+    Urgency== "Medium" AND Impact == "High", "High",
+    Urgency== "Medium" AND Impact == "Very high", "High",
+    Urgency== "High" AND Impact == "Very low", "Low", 
+    Urgency== "High" AND Impact == "Low", "Medium",
+    Urgency== "High" AND Impact == "Medium", "High",
+    Urgency== "High" AND Impact == "High", "High",
+    Urgency== "High" AND Impact == "Very high", "Very high",
+    Urgency== "Very high" AND Impact == "Very low", "Low", 
+    Urgency== "Very high" AND Impact == "Low", "Medium",
+    Urgency== "Very high" AND Impact == "Medium", "High",
+    Urgency== "Very high" AND Impact == "High", "Very high",
+    Urgency== "Very high" AND Impact == "Very high", "Very high"
+    ) 
+    | search Priority="Very high"
+| chart count
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">block</option>
+        <option name="drilldown">all</option>
+        <option name="numberPrecision">0</option>
+        <option name="rangeColors">["0xdc4e41","0xdc4e41"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="showTrendIndicator">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.scales.shared">1</option>
+        <option name="trellis.size">medium</option>
+        <option name="trendColorInterpretation">standard</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="underLabel">Alerts</option>
+        <option name="unitPosition">after</option>
+        <option name="useColors">1</option>
+        <option name="useThousandSeparators">1</option>
+        <drilldown>
+          <link target="_blank">search?q=%7C%20rest%20%2FservicesNS%2F-%2F-%2Fsaved%2Fsearches%20%0A%7C%20search%20action.mitre_att_ck.param.urgency%3D%22*%22%0A%7C%20rename%20action.mitre_att_ck.param.urgency%20as%20%22Urgency%22%2C%20action.mitre_att_ck.param.impact%20as%20%22Impact%22%20%0A%7C%20eval%20status%20%3D%20if(disabled%20%3D%3D%200%2C%20%22enabled%22%2C%20%22disabled%22)%0A%7C%20eval%20Priority%20%3D%20case(%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Very%20low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Very%20low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Low%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Low%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Medium%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22High%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20low%22%2C%20%22Low%22%2C%20%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Low%22%2C%20%22Medium%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Medium%22%2C%20%22High%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22High%22%2C%20%22Very%20high%22%2C%0A%20%20%20%20Urgency%3D%3D%20%22Very%20high%22%20AND%20Impact%20%3D%3D%20%22Very%20high%22%2C%20%22Very%20high%22%0A%20%20%20%20)%20%0A%20%20%20%20%7C%20search%20Priority%3D%22Very%20high%22%0A%7C%20table%20title%20search%20Urgency%20Impact%20Priority%0A%7C%20appendpipe%20%0A%20%20%20%20%5B%20stats%20count%20%0A%20%20%20%20%7C%20where%20count%3D0%5D&amp;earliest=-60m@m&amp;latest=now</link>
+        </drilldown>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>List alerts</title>
+      <table>
+        <search>
+          <query>| rest /servicesNS/-/-/saved/searches 
+| search action.mitre_att_ck.param.urgency="*" disabled=$status$
+| rename action.mitre_att_ck.param.urgency as "Urgency", action.mitre_att_ck.param.impact as "Impact" 
+| eval status = if(disabled == 0, "enabled", "disabled")
+| eval Priority = case(
+    Urgency== "Very low" AND Impact == "Very low", "Very low", 
+    Urgency== "Very low" AND Impact == "Low", "Very low",
+    Urgency== "Very low" AND Impact == "Medium", "Low",
+    Urgency== "Very low" AND Impact == "High", "Low",
+    Urgency== "Very low" AND Impact == "Very high", "Low",
+    Urgency== "Low" AND Impact == "Very low", "Very low", 
+    Urgency== "Low" AND Impact == "Low", "Low",
+    Urgency== "Low" AND Impact == "Medium", "Low",
+    Urgency== "Low" AND Impact == "High", "Medium",
+    Urgency== "Low" AND Impact == "Very high", "Medium",
+    Urgency== "Medium" AND Impact == "Very low", "Low", 
+    Urgency== "Medium" AND Impact == "Low", "Low",
+    Urgency== "Medium" AND Impact == "Medium", "Medium",
+    Urgency== "Medium" AND Impact == "High", "High",
+    Urgency== "Medium" AND Impact == "Very high", "High",
+    Urgency== "High" AND Impact == "Very low", "Low", 
+    Urgency== "High" AND Impact == "Low", "Medium",
+    Urgency== "High" AND Impact == "Medium", "High",
+    Urgency== "High" AND Impact == "High", "High",
+    Urgency== "High" AND Impact == "Very high", "Very high",
+    Urgency== "Very high" AND Impact == "Very low", "Low", 
+    Urgency== "Very high" AND Impact == "Low", "Medium",
+    Urgency== "Very high" AND Impact == "Medium", "High",
+    Urgency== "Very high" AND Impact == "High", "Very high",
+    Urgency== "Very high" AND Impact == "Very high", "Very high"
+    ) 
+| table status, title, Urgency, Impact, Priority
+| sort Priority
+| appendpipe 
+    [ stats count 
+    | where count=0]</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="Priority">
+          <colorPalette type="map">{"Very low":#53A051,"Low":#B6C75A,"Medium":#F8BE34,"High":#F1813F,"Very high":#DC4E41}</colorPalette>
+        </format>
+        <format type="color" field="Impact">
+          <colorPalette type="map">{"Very low":#53A051,"Low":#B6C75A,"Medium":#F8BE34,"High":#F1813F,"Very high":#DC4E41}</colorPalette>
+        </format>
+        <format type="color" field="Urgency">
+          <colorPalette type="map">{"Very low":#53A051,"Low":#B6C75A,"Medium":#F8BE34,"High":#F1813F,"Very high":#DC4E41}</colorPalette>
+        </format>
+        <format type="color" field="status">
+          <colorPalette type="map">{"enabled":#53A051,"disabled":#708794}</colorPalette>
+        </format>
+      </table>
+    </panel>
+  </row>
+</form>

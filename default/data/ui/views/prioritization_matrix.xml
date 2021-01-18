@@ -1,0 +1,77 @@
+<form>
+  <label>Priority calculator</label>
+  <description>Alert / Incident Priority Calculator</description>
+  <fieldset submitButton="false">
+    <input type="dropdown" token="urgencia">
+      <label>Urgência</label>
+      <choice value="5">Muito Alta</choice>
+      <choice value="4">Alta</choice>
+      <choice value="3">Média</choice>
+      <choice value="2">Baixa</choice>
+      <choice value="1">Muito Baixa</choice>
+      <default>4</default>
+    </input>
+    <input type="dropdown" token="impacto">
+      <label>Impacto</label>
+      <choice value="5">Multo Alta</choice>
+      <choice value="4">Alta</choice>
+      <choice value="3">Média</choice>
+      <choice value="2">Baixa</choice>
+      <choice value="1">Muito Baixa</choice>
+      <default>3</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| makeresults 
+| eval Urgencia = $urgencia$ 
+| eval Impacto = $impacto$ 
+| eval Prioridade = case(
+    Urgencia== 1 AND Impacto == 1, "Muito Baixa", 
+    Urgencia== 1 AND Impacto == 2, "Muito Baixa",
+    Urgencia== 1 AND Impacto == 3, "Baixa",
+    Urgencia== 1 AND Impacto == 4, "Baixa",
+    Urgencia== 1 AND Impacto == 5, "Baixa",
+    Urgencia== 2 AND Impacto == 1, "Muito Baixa", 
+    Urgencia== 2 AND Impacto == 2, "Baixa",
+    Urgencia== 2 AND Impacto == 3, "Baixa",
+    Urgencia== 2 AND Impacto == 4, "Média",
+    Urgencia== 2 AND Impacto == 5, "Média",
+    Urgencia== 3 AND Impacto == 1, "Baixa", 
+    Urgencia== 3 AND Impacto == 2, "Baixa",
+    Urgencia== 3 AND Impacto == 3, "Média",
+    Urgencia== 3 AND Impacto == 4, "Alta",
+    Urgencia== 3 AND Impacto == 5, "Alta",
+    Urgencia== 4 AND Impacto == 1, "Baixa", 
+    Urgencia== 4 AND Impacto == 2, "Média",
+    Urgencia== 4 AND Impacto == 3, "Alta",
+    Urgencia== 4 AND Impacto == 4, "Alta",
+    Urgencia== 4 AND Impacto == 5, "Muito Alta",
+    Urgencia== 5 AND Impacto == 1, "Baixa", 
+    Urgencia== 5 AND Impacto == 2, "Média",
+    Urgencia== 5 AND Impacto == 3, "Alta",
+    Urgencia== 5 AND Impacto == 4, "Muito Alta",
+    Urgencia== 5 AND Impacto == 5, "Muito Alta"
+    ) 
+| fields + Prioridade
+| fields - _time</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+        <format type="color" field="Prioridade">
+          <colorPalette type="map">{"Muito Baixa":#53A051,"Baixa":#B6C75A,"Média":#F8BE34,"Alta":#EC9960,"Muito Alta":#DC4E41}</colorPalette>
+        </format>
+      </table>
+    </panel>
+  </row>
+</form>

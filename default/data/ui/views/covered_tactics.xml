@@ -1,5 +1,6 @@
 <form theme="light">
   <label>MITRE ATT&amp;CK - Covered tactics</label>
+  <description>https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json</description>
   <fieldset submitButton="false">
     <input type="multiselect" token="Platforms">
       <label>Platforms</label>
@@ -273,7 +274,7 @@
 | fillnull value="-" 
 | search $Data_Sources$ AND $Platforms$ AND $Tactics$ AND $Technique_Name$ AND Technique_ID="T*" 
 | rex field=Technique_ID mode=sed "s/\./\//g" 
-| stats values(Tactics) as Tactics by Data_Sources Platforms Technique_ID  Technique_Name Detection
+| stats values(Tactics) as Tactics values(Platforms) as Platforms values(Data_Sources) as Data_Sources by   Technique_ID  Technique_Name Detection
 | sort - Technique_ID 
 | appendpipe 
     [ stats count 
