@@ -4,19 +4,19 @@ The purpose of the app is to show how much your environment covers the technique
 
 ***For the application to work fully, it is necessary to install "Splunk Common Information Model (CIM)"***
 
-Add an alert on the dashboard
+***Add an alert on the dashboard***:
 
 ![Alt Text](files/Alert_configure.gif)
 
-Example of the completed panel
+***Example of the completed panel***:
 
 ![Alt Text](files/Environmental_coverage.jpeg)
 
-Example of the triggered alerts panel
+***Example of the triggered alerts panel***:
 
 ![Alt Text](files/Triggered_alerts.jpeg)
 
-Alerts priority panel
+***Alerts priority panel***:
 
 ![Alt Text](files/Alerts_Priority.PNG)
 
